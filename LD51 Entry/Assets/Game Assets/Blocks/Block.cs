@@ -9,6 +9,7 @@ namespace com.quinnsgames.ld51
         [SerializeField] private Input _input;
         [SerializeField] private Rigidbody2D _body;
         [SerializeField] private ControlParameters _controlParameters;
+        [SerializeField] private float _maxFallSpeed;
         private float _lrForce;
         private float _rotForce;
         private bool _controlled;
@@ -36,12 +37,20 @@ namespace com.quinnsgames.ld51
 
         private void FixedUpdate()
         {
+            _body.gravityScale = GlobalCharacteristics.Instance.GetGravity();
             if(transform.position.y < -5f)
             {
                 EndBlockControl();
             }
 
             if (!_controlled) return;
+
+            _body.gravityScale *= 0.5f;
+
+            if(_body.velocity.y < -_maxFallSpeed)
+            {
+                _body.velocity = new Vector2(_body.velocity.x, -_maxFallSpeed);
+            }
 
             _body.AddForce(new Vector2(_input.LeftRight * _lrForce, 0f), ForceMode2D.Impulse);
             _body.MoveRotation(_body.rotation + (_rotForce * _input.Rotation * Time.fixedDeltaTime));

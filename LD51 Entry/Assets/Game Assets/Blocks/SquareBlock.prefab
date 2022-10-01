@@ -185,6 +185,7 @@ MonoBehaviour:
   _input: {fileID: 8659821157088439002}
   _body: {fileID: 6204887806304265443}
   _controlParameters: {fileID: 11400000, guid: 8189773e9221efc418748637825674dd, type: 2}
+  _maxFallSpeed: 5
 --- !u!114 &8659821157088439002
 MonoBehaviour:
   m_ObjectHideFlags: 0
