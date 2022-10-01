@@ -1,0 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace com.quinnsgames.ld51
+{
+    public class Block : MonoBehaviour
+    {
+        [SerializeField] private Input _input;
+        [SerializeField] private Rigidbody2D _body;
+        [SerializeField] private ControlParameters _controlParameters;
+        private float _lrForce;
+        private float _rotForce;
+        private bool _controlled;
+        private void Awake()
+        {
+            _lrForce = _controlParameters.LeftRightForce;
+            _rotForce = _controlParameters.RotationForce;
+        }
+        private void OnEnable()
+        {
+            _controlled = true;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            EndBlockControl();
+        }
+
+        private void EndBlockControl()
+        {
+            if (!_controlled) return;
+            BlockGenerator.Instance.StartSpawnTimer();
+            _controlled = false;
+        }
+
+        private void FixedUpdate()
+        {
+            if(transform.position.y < -5f)
+            {
+                EndBlockControl();
+            }
+
+            if (!_controlled) return;
+
+            _body.AddForce(new Vector2(_input.LeftRight * _lrForce, 0f), ForceMode2D.Impulse);
+            _body.MoveRotation(_body.rotation + (_rotForce * _input.Rotation * Time.fixedDeltaTime));
+
+            if(Mathf.Abs(_body.velocity.x) > _lrForce)
+            {
+                _body.AddForce(new Vector2((Mathf.Abs(_body.velocity.x) - _lrForce) * -Mathf.Sign(_body.velocity.x), 0f), ForceMode2D.Impulse);
+            }
+
+            if(Mathf.Abs(_input.LeftRight) <= float.Epsilon)
+            {
+                if (_body.velocity.x > 0.1f)
+                {
+                    _body.AddForce(new Vector2(-_body.velocity.x, 0f), ForceMode2D.Impulse);
+                }
+                else
+                {
+                    _body.velocity = new Vector2(0f, _body.velocity.y);
+                }
+            }
+        }
+
+    }
+}
