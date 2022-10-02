@@ -11,8 +11,11 @@ namespace com.quinnsgames.ld51
         public static float GetTowerHeight()
         {
             float height = -5f;
-            while(Physics2D.Raycast(new Vector2(-10f, height), new Vector2(1f, 0f), 20f))
+            int attempts = 0;
+            while (Physics2D.OverlapBox(new Vector2(0f, height), new Vector2(1000f, 0.1f), 0f) != null)
             {
+                attempts++;
+                if (attempts > 1000) break;
                 height += 0.1f;
             }
             return height;

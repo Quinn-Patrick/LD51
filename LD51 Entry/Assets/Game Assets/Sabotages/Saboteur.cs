@@ -12,7 +12,7 @@ namespace com.quinnsgames.ld51
         [SerializeField] private SoundPlayer _soundPlayer;
         [SerializeField] private AudioClip _sabotageClip;
         private delegate void sabotage();
-        private float _timer = 8.25f;
+        private float _timer = 9.25f;
 
         sabotage[] delegates = new sabotage[6];
 
@@ -24,17 +24,15 @@ namespace com.quinnsgames.ld51
             delegates[3] = Invisible;
             delegates[4] = LaunchMissile;
             delegates[5] = Shake;
-
-            delegates[0] = Snakes;
-            delegates[1] = Snakes;
-            delegates[2] = Snakes;
-            delegates[3] = Snakes;
-            delegates[4] = Snakes;
-            delegates[5] = Snakes;
         }
 
         private void Update()
         {
+            int mode = 0;
+            if(BonusModes.Instance != null)
+            {
+                mode = BonusModes.Instance.sabotageMode;
+            }
             if (!GameTimer.GameActive)
             {
                 _timer = 10f;
@@ -44,10 +42,31 @@ namespace com.quinnsgames.ld51
             _timer -= Time.deltaTime;
             if (_timer <= 0)
             {
-                _soundPlayer.PlaySoundWithVolume(_sabotageClip, 3.0f);
-                delegates[Random.Range(0, delegates.Length)]();
                 _timer += 10f;
+                if (mode == 3) return;
+                _soundPlayer.PlaySoundWithVolume(_sabotageClip, 3.0f);
+                delegates[SelectDelegate(mode)]();
                 delegates[4] = DoNothing;
+            }
+        }
+
+        private int SelectDelegate(int mode)
+        {
+            if (mode == 0)
+            {
+                return Random.Range(0, delegates.Length);
+            }
+            else if(mode == 1)
+            {
+                return 0;
+            }
+            else if(mode == 2)
+            {
+                return 2;
+            }
+            else
+            {
+                return Random.Range(0, delegates.Length);
             }
         }
 

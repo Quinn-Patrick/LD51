@@ -1754,6 +1754,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _source: {fileID: 1033901717}
   _clip: {fileID: 8300000, guid: d20e36cb86dbfec48846a4051c058a54, type: 3}
+  _clip8Bit: {fileID: 8300000, guid: 3343c739bf1c3404c80dcb12f8c2c665, type: 3}
+  _clipMetal: {fileID: 8300000, guid: 0b39d88dc80232742b49654ec37df431, type: 3}
 --- !u!114 &1033901719
 MonoBehaviour:
   m_ObjectHideFlags: 0

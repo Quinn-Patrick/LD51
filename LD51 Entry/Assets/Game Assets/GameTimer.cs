@@ -20,29 +20,47 @@ namespace com.quinnsgames.ld51
         private void Awake()
         {
             Instance = this;
-            _timer = 360;
+            if (BonusModes.Instance == null)
+            {
+                _timer = 360;
+                return;
+            }
+            int mode = BonusModes.Instance.gameLength;
+            if (mode == 1) _timer = 180;
+            else if (mode == 2) _timer = 60;
+            else _timer = 360;
         }
         private void Update()
         {
             _timer -= Time.deltaTime;
             int minutes = (int)Mathf.Floor(_timer / 60);
             int seconds = (int)_timer - (minutes * 60);
-            if(_timer <= 0f)
+            if(_timer <= 6f)
             {
-                if(_finalScore <= float.Epsilon)
-                {
-                    _finalScore = Tower.GetTowerHeight() + 5f;
-                }
-                GameActive = false;
-                _timer = 1;
-                _endText.text = $"Game Over!\n\nFinal Height: {_finalScore.ToString("#0.0")} m\n\n[Spacebar]";
                 _endTextAnimator.SetTrigger("Activate");
+
+                if(GameActive)_endText.text =$"{ seconds }";
+
+
+                if (_timer <= float.Epsilon)
+                {
+                    if (_finalScore <= float.Epsilon)
+                    {
+                        _finalScore = Tower.GetTowerHeight() + 5f;
+                    }
+                    BlockPool.GetAllActiveBlocks().Clear();
+                    GameActive = false;
+                    _timer = 1;
+                    _endText.text = $"Game Over!\n\nFinal Height: {_finalScore.ToString("#0.0")} m\n\n[Spacebar]";
+                    
+                }
             }
 
             if (!GameActive)
             {
                 if (_input.Start)
                 {
+                    GameActive = true;
                     SceneManager.LoadScene(0);
                 }
             }
