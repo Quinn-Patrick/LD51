@@ -6,7 +6,6 @@ namespace com.quinnsgames.ld51
 {
     public class BlockGenerator : MonoBehaviour
     {
-        private float timer;
         public static BlockGenerator Instance;
         [SerializeField] private BlockPool _blockPool;
         private float _timeUntilSpawn;
@@ -23,6 +22,11 @@ namespace com.quinnsgames.ld51
         }
         private void Update()
         {
+            if (!GameTimer.GameActive)
+            {
+                _spawnActivated = false;
+                return;
+            }
             _timeUntilSpawn -= Time.deltaTime;
             if(_timeUntilSpawn < 0f && _spawnActivated)
             {

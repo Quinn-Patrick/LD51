@@ -10,11 +10,14 @@ namespace com.quinnsgames.ld51
         [SerializeField] private Rigidbody2D _body;
         [SerializeField] private ControlParameters _controlParameters;
         [SerializeField] private float _maxFallSpeed;
+        private float _invisibilityTimer = 5f;
+        private SpriteRenderer _spriteRenderer;
         private float _lrForce;
         private float _rotForce;
         private bool _controlled;
         private void Awake()
         {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             _lrForce = _controlParameters.LeftRightForce;
             _rotForce = _controlParameters.RotationForce;
         }
@@ -37,11 +40,22 @@ namespace com.quinnsgames.ld51
 
         private void FixedUpdate()
         {
-            _body.gravityScale = GlobalCharacteristics.Instance.GetGravity();
+            if (!_spriteRenderer.enabled)
+            {
+                _invisibilityTimer -= Time.fixedDeltaTime;
+                if(_invisibilityTimer < 0)
+                {
+                    _spriteRenderer.enabled = true;
+                    _invisibilityTimer = 5f;
+                }
+            }
+
+            _body.gravityScale = 0.8f;
             if(transform.position.y < -5f)
             {
                 EndBlockControl();
             }
+            _maxFallSpeed = GlobalCharacteristics.Instance.GetGravity();
 
             if (!_controlled) return;
 
