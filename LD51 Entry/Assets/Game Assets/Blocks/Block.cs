@@ -10,6 +10,8 @@ namespace com.quinnsgames.ld51
         [SerializeField] private Rigidbody2D _body;
         [SerializeField] private ControlParameters _controlParameters;
         [SerializeField] private float _maxFallSpeed;
+        [SerializeField] private SoundPlayer _soundPlayer;
+        [SerializeField] private AudioClip _plopSound;
         private float _invisibilityTimer = 5f;
         private SpriteRenderer _spriteRenderer;
         private float _lrForce;
@@ -28,6 +30,7 @@ namespace com.quinnsgames.ld51
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            _soundPlayer.PlaySoundWithVolume(_plopSound, collision.relativeVelocity.magnitude / 2);
             EndBlockControl();
         }
 
@@ -40,16 +43,18 @@ namespace com.quinnsgames.ld51
 
         private void FixedUpdate()
         {
-            if (!_spriteRenderer.enabled)
+            if (_spriteRenderer != null)
             {
-                _invisibilityTimer -= Time.fixedDeltaTime;
-                if(_invisibilityTimer < 0)
+                if (!_spriteRenderer.enabled)
                 {
-                    _spriteRenderer.enabled = true;
-                    _invisibilityTimer = 5f;
+                    _invisibilityTimer -= Time.fixedDeltaTime;
+                    if (_invisibilityTimer < 0)
+                    {
+                        _spriteRenderer.enabled = true;
+                        _invisibilityTimer = 5f;
+                    }
                 }
             }
-
             _body.gravityScale = 0.8f;
             if(transform.position.y < -5f)
             {

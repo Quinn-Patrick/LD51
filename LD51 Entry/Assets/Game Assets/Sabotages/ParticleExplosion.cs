@@ -7,10 +7,15 @@ namespace com.quinnsgames.ld51
     public class ParticleExplosion : MonoBehaviour
     {
         [SerializeField] private ParticleSystem _particleSystem;
+        [SerializeField] private SoundPlayer _soundPlayer;
+        [SerializeField] private AudioClip _clip;
+        private bool _ready = false;
         private float _timer = 0;
 
         private void OnEnable()
         {
+            if(_ready)_soundPlayer.PlaySoundWithVolume(_clip, 1.0f);
+            _ready = true;
             _timer = 5f;
             _particleSystem.Play();
         }

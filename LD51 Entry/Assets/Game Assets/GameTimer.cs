@@ -20,7 +20,7 @@ namespace com.quinnsgames.ld51
         private void Awake()
         {
             Instance = this;
-            _timer = 180;
+            _timer = 360;
         }
         private void Update()
         {

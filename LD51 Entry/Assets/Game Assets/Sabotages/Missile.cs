@@ -10,6 +10,9 @@ namespace com.quinnsgames.ld51
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private float _timer;
         [SerializeField] private ParticleExplosion _explosion;
+
+        [SerializeField] private SoundPlayer _soundPlayer;
+        [SerializeField] private AudioClip _explosionSound;
         private void Awake()
         {
             gameObject.SetActive(false);
@@ -24,6 +27,7 @@ namespace com.quinnsgames.ld51
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            _soundPlayer.PlaySoundWithVolume(_explosionSound, 1.0f);
             GlobalCharacteristics.Instance.CameraShakeTimer = 0.5f;
             GlobalCharacteristics.Instance.CameraShake = 0.5f;
             Explosion.Explode(gameObject.transform.position, 10f, 100f, _layerMask);
