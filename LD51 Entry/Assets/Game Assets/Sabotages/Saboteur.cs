@@ -16,10 +16,15 @@ namespace com.quinnsgames.ld51
 
         private void Awake()
         {
-            delegates[0] = LaunchMissile;
+            /*delegates[0] = LaunchMissile;
             delegates[1] = IncreaseGravity;
             delegates[2] = Snakes;
             delegates[3] = Invisible;
+            delegates[4] = LaunchMissile;*/
+            delegates[0] = LaunchMissile;
+            delegates[1] = LaunchMissile;
+            delegates[2] = LaunchMissile;
+            delegates[3] = LaunchMissile;
             delegates[4] = LaunchMissile;
         }
 

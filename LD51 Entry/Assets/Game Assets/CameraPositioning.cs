@@ -12,6 +12,7 @@ namespace com.quinnsgames.ld51
         private void Update()
         {
             if (_camera == null) return;
+            _camera.transform.position = new Vector3(0f, _camera.transform.position.y, -10f);
             if (_camera.transform.position.y < Tower.GetTowerHeight())
             {
                 _camera.transform.position += new Vector3(0f, _adjustmentSpeed * Time.deltaTime, 0f);
@@ -20,7 +21,14 @@ namespace com.quinnsgames.ld51
             {
                 _camera.transform.position -= new Vector3(0f, _adjustmentSpeed * Time.deltaTime, 0f);
             }
-            
+
+            if (GlobalCharacteristics.Instance.CameraShakeTimer > 0f)
+            {
+                _camera.transform.position += new Vector3(Random.Range(
+                    -GlobalCharacteristics.Instance.CameraShake, GlobalCharacteristics.Instance.CameraShake),
+                    Random.Range(-GlobalCharacteristics.Instance.CameraShake, GlobalCharacteristics.Instance.CameraShake),
+                    0f);
+            }
         }
     }
 }

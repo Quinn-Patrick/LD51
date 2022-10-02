@@ -24,6 +24,8 @@ namespace com.quinnsgames.ld51
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            GlobalCharacteristics.Instance.CameraShakeTimer = 0.5f;
+            GlobalCharacteristics.Instance.CameraShake = 0.5f;
             Explosion.Explode(gameObject.transform.position, 10f, 100f, _layerMask);
             _explosion.transform.position = this.transform.position;
             _explosion.gameObject.SetActive(true);
